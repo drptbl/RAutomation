@@ -31,7 +31,7 @@ module RAutomation
         end
 
         # @see RAutomation::TextField#set
-        def set(text)
+        def set(text, opts = {})
           wait_until do
             @window.activate
             @window.active? &&

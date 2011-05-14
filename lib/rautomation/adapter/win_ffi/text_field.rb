@@ -9,17 +9,27 @@ module RAutomation
         DEFAULT_LOCATORS = {:class => /edit/i}
 
         # @see RAutomation::TextField#set
-        def set(text)
-          raise "Cannot set value on a disabled text field" if disabled?
-
-          wait_until do
+        def set(text,opts)                    
+          if opts && opts[:no_wait]
             hwnd = Functions.control_hwnd(@window.hwnd, @locators)
             @window.activate
             @window.active? &&
-                    Functions.set_control_focus(hwnd) &&
-                    Functions.set_control_text(hwnd, text) &&
-                    value == text
+                      Functions.set_control_focus(hwnd) &&
+                      Functions.set_control_text(hwnd, text) &&
+                      value == text
+            
+          else
+            raise "Cannot set value on a disabled text field" if self.respond_to?("disabled?") && disabled?
+            wait_until do
+              hwnd = Functions.control_hwnd(@window.hwnd, @locators)
+              @window.activate
+              @window.active? &&
+                      Functions.set_control_focus(hwnd) &&
+                      Functions.set_control_text(hwnd, text) &&
+                      value == text
+            end
           end
+          
         end
 
         # @see RAutomation::TextField#clear

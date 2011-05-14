@@ -10,10 +10,11 @@ module RAutomation
 
     # Sets text of the text field.
     # @param [String] text of the field to set.
-    # @raise [UnknownTextFieldException] if the text field doesn't exist.
-    def set(text)
+		# HACK @params [Hash], pass options 
+    # @raise [UnknownTextFieldException] if the text field doesn't exist.		
+    def set(text, opts = {})
       wait_until_exists
-      @text_field.set(text)
+      @text_field.set(text, opts)
     end
 
     # Clears text field's text.
